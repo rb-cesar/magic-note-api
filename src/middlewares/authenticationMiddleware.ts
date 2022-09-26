@@ -13,6 +13,10 @@ export const autheticationMiddleware: RequestHandler = (req, res, next) => {
   try {
     jwt.verify(authToken, uri.secret_access_key)
 
+    const decodedToken: any = jwt.decode(authToken)
+
+    req.cookies['userId'] = decodedToken.userId
+
     next()
   } catch (err) {
     return res.status(401).json({ error: true, status: 422, message: 'Unauthenticated' })

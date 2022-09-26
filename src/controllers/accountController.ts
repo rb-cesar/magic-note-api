@@ -8,6 +8,7 @@ import { createTokenProvider } from 'providers/tokenProvider'
 import { shouldReturnOnly } from 'utils/objectHandler'
 import { createAccountValidator } from 'validators/accountValidator'
 import { Session } from 'models/Session'
+import { NoteGroup } from 'models/Note'
 
 type UserRequestType = Omit<IUserSchema, 'id' | 'createdAt' | 'updatedAt'>
 
@@ -39,6 +40,8 @@ export const signOn: RequestHandler<any, any, UserRequestType> = async (req, res
   const { generateToken, generateRefreshTokenSession } = tokenProvider
   const token = generateToken(userResponse.id)
   const refreshTokenSession = await generateRefreshTokenSession(userResponse.id)
+
+  await NoteGroup.create({ creatorId: user.id, name: 'Notes' })
 
   return res.status(201).json({
     user: userResponse,
@@ -73,7 +76,7 @@ export const signIn: RequestHandler<any, any, UserLoginRequestType> = async (req
   const token = generateToken(user?.id!)
   const refreshTokenSession = await generateRefreshTokenSession(user?.id!)
 
-  const userResponse = shouldReturnOnly(user, ['id', 'username', 'email', 'createdAt', 'updatedAt'])
+  const userResponse = shouldReturnOnly(user, ['id', 'avatar','username', 'email', 'createdAt', 'updatedAt'])
 
   return res.status(200).json({
     user: userResponse,
@@ -126,7 +129,7 @@ export const showUser: RequestHandler<{ userId: string }> = async (req, res) => 
     return res.status(404).json({ error: true, status: 404, message: 'User not found' })
   }
 
-  const userResponse = shouldReturnOnly(user, ['id', 'username', 'email', 'createdAt', 'updatedAt'])
+  const userResponse = shouldReturnOnly(user, ['id', 'avatar', 'username', 'email', 'createdAt', 'updatedAt'])
 
   return res.status(200).json(userResponse)
 }

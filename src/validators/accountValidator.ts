@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose'
 import { compare } from 'bcrypt'
 
 import { User } from 'models/User'
-import { ISession, IUserSchema } from 'interfaces/account'
+import { ISessionSchema, IUserSchema } from 'interfaces/account'
 import { validate } from 'validators/globalValidator'
 import { uri } from 'config/access'
 import { Session } from 'models/Session'
@@ -16,8 +16,8 @@ export type Result = {
 
 export type UserLoginType = Omit<IUserSchema, 'id' | 'createdAt' | 'updatedAt' | 'email'>
 
-export type DBSession = Document<unknown, any, ISession> &
-  ISession & {
+export type DBSession = Document<unknown, any, ISessionSchema> &
+  ISessionSchema & {
     _id: Types.ObjectId
   }
 

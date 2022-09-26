@@ -1,5 +1,6 @@
 export interface IUserSchema {
   id: string
+  avatar?: string
   username: string
   email: string
   password: string
@@ -7,7 +8,7 @@ export interface IUserSchema {
   updatedAt: string
 }
 
-export interface ISession {
+export interface ISessionSchema {
   id: string
   userId: string
   refreshToken: string

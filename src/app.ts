@@ -1,5 +1,6 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import cookieParser from 'cookie-parser'
 
 import { uri } from 'config/access'
 import { router } from 'routes/routes'
@@ -20,6 +21,7 @@ function createDatabaseInitializer() {
 function createGlobalInitializer() {
   return {
     initializeMiddlawares() {
+      app.use(cookieParser())
       app.use(express.json())
       app.use(router)
     },

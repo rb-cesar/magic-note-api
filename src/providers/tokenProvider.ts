@@ -7,14 +7,14 @@ import { Session } from 'models/Session'
 function getTime(value: string) {
   const date = new Date()
 
-  date.setSeconds(Number(value.replace(/\D/, '')))
+  date.setHours(Number(value.replace(/\D/, '')))
 
   return date.getTime()
 }
 
 export function createTokenProvider() {
-  const tokenExpiresIn = '60s'
-  const refreshTokenExpiresIn = '120s'
+  const tokenExpiresIn = '24h' // 1d
+  const refreshTokenExpiresIn = '120h' // 5d
 
   let timeToExpiresToken = getTime(tokenExpiresIn)
 
