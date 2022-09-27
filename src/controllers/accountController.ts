@@ -76,13 +76,26 @@ export const signIn: RequestHandler<any, any, UserLoginRequestType> = async (req
   const token = generateToken(user?.id!)
   const refreshTokenSession = await generateRefreshTokenSession(user?.id!)
 
-  const userResponse = shouldReturnOnly(user, ['id', 'avatar','username', 'email', 'createdAt', 'updatedAt'])
+  const userResponse = shouldReturnOnly(user, ['id', 'avatar', 'username', 'email', 'createdAt', 'updatedAt'])
 
   return res.status(200).json({
     user: userResponse,
     token,
     session: refreshTokenSession,
   })
+}
+
+// ------------------------------------------- // ------------------------------------------- //
+
+export const updateUser: RequestHandler<any, any, IUserSchema> = async (req, res) => {
+  const avatar = req.file!['key']
+  const { username } = req.body
+  const { userId } = req.cookies
+
+  const newUserData = (await User.findOneAndUpdate({ id: userId }, { avatar, username }, { returnOriginal: false }))!
+  const dataUser = shouldReturnOnly(newUserData, ['id', 'avatar', 'username', 'email'])
+
+  return res.status(200).json(dataUser)
 }
 
 // ------------------------------------------- // ------------------------------------------- //

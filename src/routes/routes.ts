@@ -1,9 +1,19 @@
 import { Router } from 'express'
+import multer from 'multer'
+
+import { createMulterConfig } from 'config/multer'
 import { autheticationMiddleware } from 'middlewares/authenticationMiddleware'
+
 import * as accountController from 'controllers/accountController'
-import * as noteController from 'controllers/noteController'
+import { noteRouter } from './noteRoutes'
 
 const router = Router()
+const multerConfig = createMulterConfig({
+  path: 'avatar',
+  maxMB: 2,
+  allowedMimes: ['image/jpg', 'image/jpeg', 'image/png'],
+})
+const avatarMiddleware = multer(multerConfig).single('avatar')
 
 // ------------------------------------------- // ------------------------------------------- //
 
@@ -11,19 +21,15 @@ router.post('/account/sign-on', accountController.signOn)
 
 router.post('/account/sign-in', accountController.signIn)
 
+router.put('/account/:userId', autheticationMiddleware, avatarMiddleware, accountController.updateUser)
+
 router.get('/account/session/:sessionId', accountController.refreshToken)
 
 router.get('/account/show/:userId', autheticationMiddleware, accountController.showUser)
 
 // ------------------------------------------- // ------------------------------------------- //
 
-router.post('/note/create-note', autheticationMiddleware, noteController.createNote)
-
-router.post('/note/create-group', autheticationMiddleware, noteController.createGroup)
-
-router.get('/note/groups', autheticationMiddleware, noteController.getGroup)
-
-router.get('/note/groups/:groupId', autheticationMiddleware, noteController.getGroup)
+router.use(autheticationMiddleware, noteRouter)
 
 // ------------------------------------------- // ------------------------------------------- //
 
