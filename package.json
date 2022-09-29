@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node -r tsconfig-paths/register build/server.js",
     "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/server.ts' -e ts",
-    "build": "npx tsc"
+    "build": "npm install && npx tsc"
   },
   "author": "rb-cesar",
   "license": "ISC",
