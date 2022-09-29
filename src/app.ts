@@ -5,8 +5,6 @@ import cookieParser from 'cookie-parser'
 import { uri } from '@app/config/access'
 import { router } from '@app/routes/routes'
 
-const { host, port } = uri
-
 const app = express()
 
 function createDatabaseInitializer() {
@@ -39,7 +37,7 @@ export function createApplication() {
         await initializeDatabase()
         initializeMiddlawares()
 
-        app.listen(port, host, () => console.log(`Server running at http://${host}:${port}`))
+        app.listen(uri.port)
       } catch (err: any) {
         console.error(err)
       }
