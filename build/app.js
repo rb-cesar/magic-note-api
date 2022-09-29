@@ -9,7 +9,6 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const access_1 = require("@app/config/access");
 const routes_1 = require("@app/routes/routes");
-const { host, port } = access_1.uri;
 const app = (0, express_1.default)();
 function createDatabaseInitializer() {
     return {
@@ -37,7 +36,7 @@ function createApplication() {
             try {
                 await initializeDatabase();
                 initializeMiddlawares();
-                app.listen(port, host, () => console.log(`Server running at http://${host}:${port}`));
+                app.listen(access_1.uri.port);
             }
             catch (err) {
                 console.error(err);
