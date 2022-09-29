@@ -1,10 +1,10 @@
 import { RequestHandler } from 'express'
 import { v4 as uuid } from 'uuid'
-import { INoteSchema } from 'interfaces/note'
-import { Note, NoteGroup } from 'models/Note'
-import { StorageService } from 'services/StorageService'
-import { shouldReturnOnly } from 'utils/objectHandler'
-import { validate } from 'validators/globalValidator'
+import { INoteSchema } from '@app/interfaces/note'
+import { Note, NoteGroup } from '@app/models/Note'
+import { StorageService } from '@app/services/StorageService'
+import { shouldReturnOnly } from '@app/utils/objectHandler'
+import { validate } from '@app/validators/globalValidator'
 
 type NoteResponseType = {
   groupId: string

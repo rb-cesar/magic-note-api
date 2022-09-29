@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { v4 as uuid } from 'uuid'
-import { INoteGroupSchema, INoteSchema } from 'interfaces/note'
+import { INoteGroupSchema, INoteSchema } from '@app/interfaces/note'
 
 const noteSchema = new mongoose.Schema<INoteSchema>(
   {

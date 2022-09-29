@@ -2,13 +2,13 @@ import { RequestHandler } from 'express'
 import jwt from 'jsonwebtoken'
 import { hash } from 'bcrypt'
 
-import { IUserSchema } from 'interfaces/account'
-import { User } from 'models/User'
-import { createTokenProvider } from 'providers/tokenProvider'
-import { shouldReturnOnly } from 'utils/objectHandler'
-import { createAccountValidator } from 'validators/accountValidator'
-import { Session } from 'models/Session'
-import { NoteGroup } from 'models/Note'
+import { IUserSchema } from '@app/interfaces/account'
+import { User } from '@app/models/User'
+import { createTokenProvider } from '@app/providers/tokenProvider'
+import { shouldReturnOnly } from '@app/utils/objectHandler'
+import { createAccountValidator } from '@app/validators/accountValidator'
+import { Session } from '@app/models/Session'
+import { NoteGroup } from '@app/models/Note'
 
 type UserRequestType = Omit<IUserSchema, 'id' | 'createdAt' | 'updatedAt'>
 

@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import multer from 'multer'
 
-import * as noteController from 'controllers/noteController'
+import * as noteController from '@app/controllers/noteController'
 
 const noteRouter = Router()
 

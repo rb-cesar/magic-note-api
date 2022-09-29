@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
 import { v4 as uuid } from 'uuid'
 
-import { uri } from 'config/access'
-import { Session } from 'models/Session'
+import { uri } from '@app/config/access'
+import { Session } from '@app/models/Session'
 
 function getTime(value: string) {
   const date = new Date()

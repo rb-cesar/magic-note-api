@@ -2,8 +2,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 
-import { uri } from 'config/access'
-import { router } from 'routes/routes'
+import { uri } from '@app/config/access'
+import { router } from '@app/routes/routes'
 
 const { host, port } = uri
 

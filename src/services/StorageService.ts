@@ -1,9 +1,9 @@
 import { PutObjectRequest } from 'aws-sdk/clients/s3'
 import { Blob } from 'buffer'
 import { v4 as uuid } from 'uuid'
-import { uri } from 'config/access'
-import { AWS } from 'config/aws'
-import { validate } from 'validators/globalValidator'
+import { uri } from '@app/config/access'
+import { AWS } from '@app/config/aws'
+import { validate } from '@app/validators/globalValidator'
 
 type FileOption = 'image' | 'video'
 

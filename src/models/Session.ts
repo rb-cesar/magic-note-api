@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { v4 as uuid } from 'uuid'
 
-import { ISessionSchema } from 'interfaces/account'
+import { ISessionSchema } from '@app/interfaces/account'
 
 const schema = new mongoose.Schema<ISessionSchema>({
   id: { type: String, unique: true, default: uuid() },

@@ -2,11 +2,11 @@ import jwt from 'jsonwebtoken'
 import { Document, Types } from 'mongoose'
 import { compare } from 'bcrypt'
 
-import { User } from 'models/User'
-import { ISessionSchema, IUserSchema } from 'interfaces/account'
-import { validate } from 'validators/globalValidator'
-import { uri } from 'config/access'
-import { Session } from 'models/Session'
+import { User } from '@app/models/User'
+import { ISessionSchema, IUserSchema } from '@app/interfaces/account'
+import { validate } from '@app/validators/globalValidator'
+import { uri } from '@app/config/access'
+import { Session } from '@app/models/Session'
 
 export type Result = {
   error: boolean

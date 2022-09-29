@@ -1,9 +1,8 @@
 import { Router } from 'express'
-import multer from 'multer'
 
-import { autheticationMiddleware } from 'middlewares/authenticationMiddleware'
+import { autheticationMiddleware } from '@app/middlewares/authenticationMiddleware'
 
-import * as accountController from 'controllers/accountController'
+import * as accountController from '@app/controllers/accountController'
 import { noteRouter } from './noteRoutes'
 
 const router = Router()

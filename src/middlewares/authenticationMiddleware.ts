@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { uri } from 'config/access'
+import { uri } from '@app/config/access'
 
 export const autheticationMiddleware: RequestHandler = (req, res, next) => {
   const authToken = req.headers['authorization']?.split(' ')[1]

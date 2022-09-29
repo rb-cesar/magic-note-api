@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-import { createApplication } from 'app'
+import { createApplication } from '@app/app'
 
 const application = createApplication()
 
