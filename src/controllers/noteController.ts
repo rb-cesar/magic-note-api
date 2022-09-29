@@ -1,6 +1,8 @@
 import { RequestHandler } from 'express'
+import { v4 as uuid } from 'uuid'
 import { INoteSchema } from 'interfaces/note'
 import { Note, NoteGroup } from 'models/Note'
+import { StorageService } from 'services/StorageService'
 import { shouldReturnOnly } from 'utils/objectHandler'
 import { validate } from 'validators/globalValidator'
 
@@ -9,7 +11,8 @@ type NoteResponseType = {
 } & Omit<INoteSchema, 'id' | 'creatorId' | 'createdAt' | 'updatedAt'>
 
 export const createNote: RequestHandler<any, any, NoteResponseType> = async (req, res) => {
-  const { groupId, description, type, checked, imageUrl } = req.body || {}
+  const { groupId, description, type, checked } = req.body || {}
+  const { file } = req
 
   const { error, status, message } = await validate(null, [
     () => ({
@@ -33,25 +36,67 @@ export const createNote: RequestHandler<any, any, NoteResponseType> = async (req
     return res.status(status).json({ error, status, message })
   }
 
+  const image = {
+    current: '',
+  }
+
+  if (file) {
+    const storage = new StorageService('image')
+
+    const { validation, data } = await storage.upload('images', file)
+    const { error, status, message } = validation
+
+    if (error) {
+      return res.status(status).json({ error, status, message })
+    }
+
+    image.current = data?.Key!
+  }
+
   const { userId } = req.cookies
 
   try {
     const createdNote = await Note.create({
+      id: uuid(),
       creatorId: userId,
       type,
       groupId,
       description,
-      imageUrl,
+      imageUrl: image.current || undefined,
       checked,
     })
 
-    const dataNote = shouldReturnOnly(createdNote, ['id', 'creatorId', 'groupId', 'imageUrl', 'description', 'type'])
+    const dataNote = shouldReturnOnly(createdNote, [
+      'id',
+      'creatorId',
+      'groupId',
+      'imageUrl',
+      'description',
+      'type',
+      'createdAt',
+      'updatedAt',
+    ])
 
     return res.status(201).json(dataNote)
   } catch (err) {
     console.error(err)
     return res.status(500).json({ error: true, status: 500, message: 'internal server error' })
   }
+}
+
+export const deleteNote: RequestHandler<{ noteId: string }> = async (req, res) => {
+  const { noteId } = req.params
+
+  const note = (await Note.findOne({ id: noteId }))!
+  const storage = new StorageService('image')
+
+  if (note?.imageUrl) {
+    await storage.delete(note.imageUrl)
+  }
+
+  await note?.delete()
+
+  return res.status(204).send()
 }
 
 export const createGroup: RequestHandler<any, any, { name: string }> = async (req, res) => {
