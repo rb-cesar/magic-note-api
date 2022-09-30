@@ -37,7 +37,6 @@ export function createApplication() {
         await initializeDatabase()
         initializeMiddlawares()
 
-        console.log(uri)
         app.listen(uri.port)
       } catch (err: any) {
         console.error(err)
