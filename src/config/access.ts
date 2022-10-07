@@ -1,8 +1,8 @@
-export const uri = {
+export const access = {
   port: Number(process.env.PORT!),
   db_access: process.env.DB_ACCESS!,
-  domains: process.env.CORS_DOMAINS!,
   secret_access_key: process.env.SECRET_ACCESS_KEY!,
+  is_production: JSON.parse(process.env.PRODUCTION!) as boolean,
 
   aws: {
     bucket_name: process.env.AWS_BUCKET_NAME!,
@@ -11,3 +11,5 @@ export const uri = {
     secret_access_key: process.env.AWS_SECRET_ACCESS_KEY!,
   },
 }
+
+export const whitelist = process.env.CORS_DOMAINS!.split(' | ').map(item => item.trim())

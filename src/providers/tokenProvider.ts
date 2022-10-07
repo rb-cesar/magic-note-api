@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { v4 as uuid } from 'uuid'
 
-import { uri } from '@app/config/access'
+import { access } from '@app/config/access'
 import { Session } from '@app/models/Session'
 
 function getTime(value: string) {
@@ -20,7 +20,7 @@ export function createTokenProvider() {
 
   return {
     generateToken(userId: string) {
-      const token = jwt.sign({ userId }, uri.secret_access_key, {
+      const token = jwt.sign({ userId }, access.secret_access_key, {
         expiresIn: tokenExpiresIn,
         subject: userId,
       })
@@ -30,7 +30,7 @@ export function createTokenProvider() {
       return token
     },
     async generateRefreshTokenSession(userId: string) {
-      const refreshToken = jwt.sign({ userId, expiresIn: timeToExpiresToken }, uri.secret_access_key, {
+      const refreshToken = jwt.sign({ userId, expiresIn: timeToExpiresToken }, access.secret_access_key, {
         expiresIn: refreshTokenExpiresIn,
         subject: userId,
       })

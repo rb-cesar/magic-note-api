@@ -1,7 +1,7 @@
 import { PutObjectRequest } from 'aws-sdk/clients/s3'
 import { Blob } from 'buffer'
 import { v4 as uuid } from 'uuid'
-import { uri } from '@app/config/access'
+import { access } from '@app/config/access'
 import { AWS } from '@app/config/aws'
 import { validate } from '@app/validators/globalValidator'
 
@@ -115,7 +115,7 @@ export class StorageService {
     return new Promise((resolve, reject) => {
       this.s3.deleteObject(
         {
-          Bucket: uri.aws.bucket_name,
+          Bucket: access.aws.bucket_name,
           Key: src,
         },
         (err, data) => (err ? reject(err) : resolve(data))
@@ -127,7 +127,7 @@ export class StorageService {
     return new Promise((resolve, reject) => {
       this.s3.getObject(
         {
-          Bucket: uri.aws.bucket_name,
+          Bucket: access.aws.bucket_name,
           Key: src,
         },
         (err, data) => (err ? reject(err) : resolve(data))

@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { uri } from '@app/config/access'
+import { access } from '@app/config/access'
 
 export const autheticationMiddleware: RequestHandler = (req, res, next) => {
   const authToken = req.headers['authorization']?.split(' ')[1]
@@ -11,7 +11,7 @@ export const autheticationMiddleware: RequestHandler = (req, res, next) => {
   }
 
   try {
-    jwt.verify(authToken, uri.secret_access_key)
+    jwt.verify(authToken, access.secret_access_key)
 
     const decodedToken: any = jwt.decode(authToken)
 

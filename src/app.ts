@@ -4,16 +4,15 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import morgan from 'morgan'
 
-import { uri } from '@app/config/access'
+import { access, whitelist } from '@app/config/access'
 import { router } from '@app/routes/routes'
 
 const app = express()
-const whitelist = uri.domains.split(',').map(item => item.trim())
 
 function createDatabaseInitializer() {
   return {
     async initializeDatabase() {
-      const connection = await mongoose.connect(uri.db_access)
+      const connection = await mongoose.connect(access.db_access)
       return connection
     },
   }
@@ -25,23 +24,13 @@ function createGlobalInitializer() {
       app.use(express.json())
       app.use(express.urlencoded({ extended: true }))
       app.use(cookieParser())
-      app.use(morgan('dev'))
+      app.use(morgan('common'))
       app.use(router)
     },
     initializeCors() {
-      app.use(
-        cors({
-          credentials: true,
-          origin: function (origin, cb) {
-            if (!origin || whitelist.indexOf(origin) !== -1) {
-              cb(null, true)
-              return
-            }
+      const allowedOrigin = access.is_production ? whitelist : '*'
 
-            cb(new Error('Not allowed CORS'))
-          },
-        })
-      )
+      app.use(cors({ credentials: true, origin: allowedOrigin }))
     },
   }
 }
@@ -57,7 +46,7 @@ export function createApplication() {
         initializeMiddlawares()
         initializeCors()
 
-        app.listen(uri.port)
+        app.listen(access.port)
       } catch (err: any) {
         console.error(err)
       }
