@@ -21,30 +21,32 @@ function createDatabaseInitializer() {
 function createGlobalInitializer() {
   return {
     initializeMiddlawares() {
+      app.use(
+        cors({
+          credentials: true,
+          origin: access.is_production ? whitelist : '*',
+          methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+          allowedHeaders: ['Accept', 'Authorization', 'Content-Type', 'Origin', 'X-Requested-With'],
+        })
+      )
       app.use(express.json())
       app.use(express.urlencoded({ extended: true }))
       app.use(cookieParser())
       app.use(morgan('common'))
       app.use(router)
     },
-    initializeCors() {
-      const allowedOrigin = access.is_production ? whitelist : '*'
-
-      app.use(cors({ credentials: true, origin: allowedOrigin }))
-    },
   }
 }
 
 export function createApplication() {
   const { initializeDatabase } = createDatabaseInitializer()
-  const { initializeMiddlawares, initializeCors } = createGlobalInitializer()
+  const { initializeMiddlawares } = createGlobalInitializer()
 
   const application = {
     async start() {
       try {
         await initializeDatabase()
         initializeMiddlawares()
-        initializeCors()
 
         app.listen(access.port)
       } catch (err: any) {
